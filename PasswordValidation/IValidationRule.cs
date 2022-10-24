@@ -1,11 +1,11 @@
 ﻿namespace PasswordValidation;
 
-public interface IValidationRules
+public interface IValidationRule
 {
     public bool IsValid(string password);
 }
 
-public class ValidationRuleOne : IValidationRules
+public class ValidationRuleOne : IValidationRule
 {
     public bool IsValid(string password)
     {
@@ -17,7 +17,7 @@ public class ValidationRuleOne : IValidationRules
     }
 }
 
-public class ValidationRuleTwo : IValidationRules
+public class ValidationRuleTwo : IValidationRule
 {
     public bool IsValid(string password)
     {
@@ -28,7 +28,7 @@ public class ValidationRuleTwo : IValidationRules
     }
 }
 
-public class ValidationRuleThree : IValidationRules
+public class ValidationRuleThree : IValidationRule
 {
     public bool IsValid(string password)
     {
