@@ -6,8 +6,8 @@ public abstract class ValidatorFactory
 
     public bool ValidatePassword(string password)
     {
-        var validator = FactoryMethod();
-        return validator.IsValid(password);
+        var validationRule = FactoryMethod();
+        return validationRule.IsValid(password);
     }
 }
 
