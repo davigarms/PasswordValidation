@@ -1,5 +1,27 @@
 ﻿namespace PasswordValidation;
 
+public interface IValidationFactory
+{
+    public IValidationRule Create();
+}
+
+public class ValidationRuleOneFactory : IValidationFactory
+{
+    public IValidationRule Create() => new ValidationRuleOne();
+}
+
+public class ValidationRuleTwoFactory : IValidationFactory
+{
+    public IValidationRule Create() => new ValidationRuleTwo();
+}
+
+public class ValidationRuleThreeFactory : IValidationFactory
+{
+    public IValidationRule Create() => new ValidationRuleThree();
+}
+
+
+
 public abstract class ValidatorFactory
 {
     protected abstract IValidationRule FactoryMethod();
