@@ -1,6 +1,5 @@
-using System.Data;
+using NUnit.Framework;
 using FakeItEasy;
-using NUnit.Framework.Constraints;
 
 namespace PasswordValidation;
 
@@ -13,7 +12,7 @@ public class PasswordValidatorTests
     [TestCase("Passw0rdContainsAnUnderscore_")]
     public void ValidatePassword_rule_one_returns_true_when_password_is_valid(string password)
     {
-        var validator = new PasswordValidator(new ValidationRuleOneFactory());
+        var validator = new PasswordValidator(new ValidationOneFactory());
         var isValid = validator.IsValid(password);
         Assert.That(isValid, Is.True);
     }
@@ -24,7 +23,7 @@ public class PasswordValidatorTests
     [TestCase("Passw0rdContainsANumber")]
     public void ValidatePassword_rule_two_returns_true_when_password_is_valid(string password)
     {
-        var validator = new PasswordValidator(new ValidationRuleTwoFactory());
+        var validator = new PasswordValidator(new ValidationTwoFactory());
         var isValid = validator.IsValid(password);
         Assert.That(isValid, Is.True);
     }
@@ -35,7 +34,7 @@ public class PasswordValidatorTests
     [TestCase("PasswordContainsAnUnderscore_")]
     public void ValidatePassword_rule_three_returns_true_when_password_is_valid(string password)
     {
-        var validator = new PasswordValidator(new ValidationRuleThreeFactory());
+        var validator = new PasswordValidator(new ValidationThreeFactory());
         var isValid = validator.IsValid(password);
         Assert.That(isValid, Is.True);
     }
@@ -44,9 +43,9 @@ public class PasswordValidatorTests
     public void Validator_returns_expected_result([Values] bool expected)
     {
         var validatorFactory = A.Fake<IValidationFactory>();
-        var validationRule = A.Fake<IValidationRule>();
-        A.CallTo(() => validationRule.IsValid(A<string>._)).Returns(expected);
-        A.CallTo(() => validatorFactory.Create()).Returns(validationRule);
+        var ruleValidator = A.Fake<IValidation>();
+        A.CallTo(() => ruleValidator.Validate(A<string>._)).Returns(expected);
+        A.CallTo(() => validatorFactory.Create()).Returns(ruleValidator);
 
         var validator = new PasswordValidator(validatorFactory);
         Assert.That(validator.IsValid("any-password"), Is.EqualTo(expected));
@@ -55,7 +54,7 @@ public class PasswordValidatorTests
     [Test]
     public void Validator_factory_returns_the_correct_type()
     {
-        Assert.IsInstanceOf<ValidationRuleOne>(new ValidationRuleOneFactory().Create());
+        Assert.IsInstanceOf<ValidationOne>(new ValidationOneFactory().Create());
     }
 
     [TestCase(8, "validpassword", true)]
@@ -86,46 +85,21 @@ public class PasswordValidatorTests
     [TestCase(16, "invalidpassword", false)]
     public void RuleValidator_with_LengthRule_return_expected(int minLenght, string password, bool expected)
     {
-        var ruleValidator = new RuleValidator();
-        ruleValidator.Add(new LenghtValidationRule(minLenght));
-        Assert.That(ruleValidator.IsValid(password), Is.EqualTo(expected));
+        var ruleValidator = new RuleValidatorBuilder()
+            .With(new LenghtValidationRule(minLenght))
+            .Build();
+        Assert.That(ruleValidator.Validate(password), Is.EqualTo(expected));
     }
-}
-
-public class RuleValidator
-{
-    private readonly List<IRule> _rules;
-
-    public RuleValidator()
+    
+    [TestCase(8, "Validpassword", true)]
+    [TestCase(16, "invalidpassword", false)]
+    [TestCase(16, "invalid", false)]
+    public void RuleValidator_with_LengthRule_and_UpperCaseRule_return_expected(int minLenght, string password, bool expected)
     {
-        _rules = new List<IRule>();
+        var ruleValidator = new RuleValidatorBuilder()
+            .With(new LenghtValidationRule(minLenght))
+            .With(new UpperCaseRule())
+            .Build();
+        Assert.That(ruleValidator.Validate(password), Is.EqualTo(expected));
     }
-
-    public bool IsValid(string password) => _rules.All(rule => rule.Validate(password));
-
-    public int RuleCount => _rules.Count;
-
-    public void Add(IRule rule) => _rules.Add(rule);
-}
-
-public interface IRule
-{
-    public bool Validate(string password);
-}
-
-public class UpperCaseRule
-{
-    public bool Validate(string password) => password.Any(char.IsUpper);
-}
-
-public class LenghtValidationRule : IRule
-{
-    private readonly int _length;
-
-    public LenghtValidationRule(int length)
-    {
-        _length = length;
-    }
-
-    public bool Validate(string password) => password.Length > _length;
 }

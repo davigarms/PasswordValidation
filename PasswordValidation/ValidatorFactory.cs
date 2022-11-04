@@ -2,48 +2,25 @@
 
 public interface IValidationFactory
 {
-    public IValidationRule Create();
+    public IValidation Create();
 }
 
-public class ValidationRuleOneFactory : IValidationFactory
+public class ValidationOneFactory : IValidationFactory
 {
-    public IValidationRule Create() => new ValidationRuleOne();
+    public IValidation Create() => new ValidationOne();
 }
 
-public class ValidationRuleTwoFactory : IValidationFactory
+public class ValidationTwoFactory : IValidationFactory
 {
-    public IValidationRule Create() => new ValidationRuleTwo();
+    public IValidation Create() => new ValidationTwo();
 }
 
-public class ValidationRuleThreeFactory : IValidationFactory
+public class ValidationThreeFactory : IValidationFactory
 {
-    public IValidationRule Create() => new ValidationRuleThree();
+    public IValidation Create() => new ValidationThree();
 }
 
-
-
-public abstract class ValidatorFactory
+public class ValidationFourFactory : IValidationFactory
 {
-    protected abstract IValidationRule FactoryMethod();
-
-    public bool ValidatePassword(string password)
-    {
-        var validationRule = FactoryMethod();
-        return validationRule.IsValid(password);
-    }
-}
-
-public class PasswordValidatorOne : ValidatorFactory
-{
-    protected override IValidationRule FactoryMethod() => new ValidationRuleOne();
-}
-
-public class PasswordValidatorTwo : ValidatorFactory
-{
-    protected override IValidationRule FactoryMethod() => new ValidationRuleTwo();
-}
-
-public class PasswordValidatorThree : ValidatorFactory
-{
-    protected override IValidationRule FactoryMethod() => new ValidationRuleThree();
+    public IValidation Create() => new ValidationFour();
 }

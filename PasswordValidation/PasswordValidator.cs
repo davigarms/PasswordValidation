@@ -2,12 +2,13 @@
 
 public class PasswordValidator
 {
-    private readonly IValidationFactory _validationFactory;
+    private readonly IValidation _validation;
 
     public PasswordValidator(IValidationFactory validationFactory)
     {
-        _validationFactory = validationFactory;
+        _validation = validationFactory.Create();
     }
-
-    public bool IsValid(string password) => _validationFactory.Create().IsValid(password);
+    
+    public bool IsValid(string password) => _validation.Validate(password);
 }
+
