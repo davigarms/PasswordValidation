@@ -54,14 +54,14 @@ public class PasswordValidatorTests
     [Test]
     public void Validator_factory_returns_the_correct_type()
     {
-        Assert.IsInstanceOf<ValidationOne>(new ValidationOneFactory().Create());
+        Assert.IsInstanceOf<Validation>(new ValidationOneFactory().Create());
     }
 
     [TestCase(8, "validpassword", true)]
     [TestCase(16, "invalidpassword", false)]
     public void LenghtRule_returns_expected_value(int minLength, string password, bool expected)
     {
-        var rule = new LenghtValidationRule(minLength);
+        var rule = new LenghtRule(minLength);
         Assert.That(rule.Validate(password), Is.EqualTo(expected));
     }
 
@@ -72,12 +72,12 @@ public class PasswordValidatorTests
         var rule = new UpperCaseRule();
         Assert.That(rule.Validate(password), Is.EqualTo(expected));
     }
-    
+
     [Test]
     public void RuleValidator_add_a_new_rule()
     {
         var ruleValidator = new RuleValidator();
-        ruleValidator.Add(new LenghtValidationRule(8));
+        ruleValidator.Add(new LenghtRule(8));
         Assert.That(ruleValidator.RuleCount, Is.EqualTo(1));
     }
 
@@ -86,19 +86,19 @@ public class PasswordValidatorTests
     public void RuleValidator_with_LengthRule_return_expected(int minLenght, string password, bool expected)
     {
         var ruleValidator = new RuleValidatorBuilder()
-            .With(new LenghtValidationRule(minLenght))
+            .WithLenghtRule(minLenght)
             .Build();
         Assert.That(ruleValidator.Validate(password), Is.EqualTo(expected));
     }
-    
+
     [TestCase(8, "Validpassword", true)]
     [TestCase(16, "invalidpassword", false)]
     [TestCase(16, "invalid", false)]
     public void RuleValidator_with_LengthRule_and_UpperCaseRule_return_expected(int minLenght, string password, bool expected)
     {
         var ruleValidator = new RuleValidatorBuilder()
-            .With(new LenghtValidationRule(minLenght))
-            .With(new UpperCaseRule())
+            .WithLenghtRule(minLenght)
+            .WithUpperCaseRule()
             .Build();
         Assert.That(ruleValidator.Validate(password), Is.EqualTo(expected));
     }

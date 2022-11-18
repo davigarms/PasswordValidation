@@ -9,11 +9,36 @@ public class RuleValidatorBuilder
         _ruleValidator = new RuleValidator();
     }
 
-    public RuleValidatorBuilder With(IRule rule)
+    public RuleValidatorBuilder WithIsNumberRule()
     {
-        _ruleValidator.Add(rule);
+        _ruleValidator.Add(new IsNumberRule());
         return this;
     }
+
+    public RuleValidatorBuilder WithUpperCaseRule()
+    {
+        _ruleValidator.Add(new UpperCaseRule());
+        return this;
+    }
+
+    public RuleValidatorBuilder WithLowerCaseRule()
+    {
+        _ruleValidator.Add(new LowerCaseRule());
+        return this;
+    }
+
+    public RuleValidatorBuilder WithLenghtRule(int length)
+    {
+        _ruleValidator.Add(new LenghtRule(length));
+        return this;
+    }
+
+    public RuleValidatorBuilder WithIncludesCharacterRule(char character)
+    {
+        _ruleValidator.Add(new IncludesCharacterValidationRule(character));
+        return this;
+    }
+
 
     public RuleValidator Build() => _ruleValidator;
 }
