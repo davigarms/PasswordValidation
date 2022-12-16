@@ -2,44 +2,55 @@
 
 public interface IRule
 {
-    public bool Validate(string password);
+    public bool IsValid(string password);
+    string GetErrorMessage();
 }
 
 public class UpperCaseRule : IRule
 {
-    public bool Validate(string password) => password.Any(char.IsUpper);
+    private const string ErrorMessage = "Uppercase error";
+    
+    public bool IsValid(string password) => password.Any(char.IsUpper);
+    public string GetErrorMessage() => ErrorMessage;
 }
 
-public class LenghtRule : IRule
+public class LengthRule : IRule
 {
     private readonly int _length;
+    private const string ErrorMessage = "Length error";
 
-    public LenghtRule(int length)
+    public LengthRule(int length)
     {
         _length = length;
     }
 
-    public bool Validate(string password) => password.Length > _length;
+    public bool IsValid(string password) => password.Length > _length;
+
+    public string GetErrorMessage() => ErrorMessage;
 }
 
 public class LowerCaseRule : IRule
 {
-    public bool Validate(string password) => password.Any(char.IsLower);
+    private const string ErrorMessage = "Lowercase error";
+    public bool IsValid(string password) => password.Any(char.IsLower);
+    public string GetErrorMessage() => ErrorMessage;
 }
 
-public class IncludesCharacterValidationRule : IRule
+public class IncludesCharacterRule : IRule
 {
     private readonly char _character;
 
-    public IncludesCharacterValidationRule(char character)
+    public IncludesCharacterRule(char character)
     {
         _character = character;
     }
 
-    public bool Validate(string password) => password.Any(x => x.Equals(_character));
+    public bool IsValid(string password) => password.Any(x => x.Equals(_character));
+    public string GetErrorMessage() => "Character error";
 }
 
-public class IsNumberRule : IRule
+public class IncludesNumberRule : IRule
 {
-    public bool Validate(string password) => password.Any(char.IsNumber);
+    public bool IsValid(string password) => password.Any(char.IsNumber);
+    public string GetErrorMessage() => "Number error";
 }

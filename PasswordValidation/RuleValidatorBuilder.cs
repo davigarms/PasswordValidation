@@ -11,7 +11,7 @@ public class RuleValidatorBuilder
 
     public RuleValidatorBuilder WithIsNumberRule()
     {
-        _ruleValidator.Add(new IsNumberRule());
+        _ruleValidator.Add(new IncludesNumberRule());
         return this;
     }
 
@@ -29,13 +29,13 @@ public class RuleValidatorBuilder
 
     public RuleValidatorBuilder WithLenghtRule(int length)
     {
-        _ruleValidator.Add(new LenghtRule(length));
+        _ruleValidator.Add(new LengthRule(length));
         return this;
     }
 
     public RuleValidatorBuilder WithIncludesCharacterRule(char character)
     {
-        _ruleValidator.Add(new IncludesCharacterValidationRule(character));
+        _ruleValidator.Add(new IncludesCharacterRule(character));
         return this;
     }
 

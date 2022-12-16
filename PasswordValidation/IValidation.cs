@@ -2,7 +2,8 @@
 
 public interface IValidation
 {
-    bool Validate(string password);
+    void Validate(string password);
+    List<string> GetErrors();
 }
 
 public class Validation : IValidation
@@ -14,5 +15,7 @@ public class Validation : IValidation
         _ruleValidator = ruleValidator;
     }
 
-    public bool Validate(string password) => _ruleValidator.Validate(password);
+    public void Validate(string password) => _ruleValidator.Validate(password);
+
+    public List<string> GetErrors() => _ruleValidator.GetErrors();
 }

@@ -9,5 +9,9 @@ public class PasswordValidator
         _validation = validationFactory.Create();
     }
 
-    public bool IsValid(string password) => _validation.Validate(password);
+    public bool IsValid(string password)
+    {
+        _validation.Validate(password);
+        return _validation.GetErrors().Count == 0;
+    }
 }
