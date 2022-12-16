@@ -1,7 +1,4 @@
-﻿using FakeItEasy;
-using NUnit.Framework;
-
-namespace PasswordValidation;
+﻿namespace PasswordValidation.Tests;
 
 public class RuleValidatorTests
 {
