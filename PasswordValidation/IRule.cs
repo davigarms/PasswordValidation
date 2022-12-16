@@ -6,18 +6,9 @@ public interface IRule
     string GetErrorMessage();
 }
 
-public class UpperCaseRule : IRule
-{
-    private const string ErrorMessage = "Uppercase error";
-    
-    public bool IsValid(string password) => password.Any(char.IsUpper);
-    public string GetErrorMessage() => ErrorMessage;
-}
-
 public class LengthRule : IRule
 {
     private readonly int _length;
-    private const string ErrorMessage = "Length error";
 
     public LengthRule(int length)
     {
@@ -26,14 +17,19 @@ public class LengthRule : IRule
 
     public bool IsValid(string password) => password.Length > _length;
 
-    public string GetErrorMessage() => ErrorMessage;
+    public string GetErrorMessage() => ErrorMessages.LengthError;
+}
+
+public class UpperCaseRule : IRule
+{
+    public bool IsValid(string password) => password.Any(char.IsUpper);
+    public string GetErrorMessage() => ErrorMessages.UpperCaseError;
 }
 
 public class LowerCaseRule : IRule
 {
-    private const string ErrorMessage = "Lowercase error";
     public bool IsValid(string password) => password.Any(char.IsLower);
-    public string GetErrorMessage() => ErrorMessage;
+    public string GetErrorMessage() => ErrorMessages.LowerCaseError;
 }
 
 public class IncludesCharacterRule : IRule
@@ -46,11 +42,11 @@ public class IncludesCharacterRule : IRule
     }
 
     public bool IsValid(string password) => password.Any(x => x.Equals(_character));
-    public string GetErrorMessage() => "Character error";
+    public string GetErrorMessage() => ErrorMessages.IncludesCharacterError;
 }
 
 public class IncludesNumberRule : IRule
 {
     public bool IsValid(string password) => password.Any(char.IsNumber);
-    public string GetErrorMessage() => "Number error";
+    public string GetErrorMessage() => ErrorMessages.IncludesNumberError;
 }

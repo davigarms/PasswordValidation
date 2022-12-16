@@ -48,34 +48,34 @@ public class RuleTests
     public void GetErrorMessage_returns_expected_message_when_LengthRule()
     {
         var rule = new LengthRule(TestContext.CurrentContext.Random.Next(int.MaxValue));
-        Assert.That(rule.GetErrorMessage, Is.EqualTo("Length error"));
+        Assert.That(rule.GetErrorMessage, Is.EqualTo(ErrorMessages.LengthError));
     }
     
     [Test]
     public void GetErrorMessage_returns_expected_message_when_UpperCaseRule()
     {
         var rule = new UpperCaseRule();
-        Assert.That(rule.GetErrorMessage, Is.EqualTo("Uppercase error"));
+        Assert.That(rule.GetErrorMessage, Is.EqualTo(ErrorMessages.UpperCaseError));
     }
     
     [Test]
     public void GetErrorMessage_returns_expected_message_when_LowerCaseRule()
     {
         var rule = new LowerCaseRule();
-        Assert.That(rule.GetErrorMessage, Is.EqualTo("Lowercase error"));
-    }
-    
-    [Test]
-    public void GetErrorMessage_returns_expected_message_when_IncludesNumberRule()
-    {
-        var rule = new IncludesNumberRule();
-        Assert.That(rule.GetErrorMessage, Is.EqualTo("Number error"));
+        Assert.That(rule.GetErrorMessage, Is.EqualTo(ErrorMessages.LowerCaseError));
     }
     
     [Test]
     public void GetErrorMessage_returns_expected_message_when_IncludesCharacterRule()
     {
         var rule = new IncludesCharacterRule('_');
-        Assert.That(rule.GetErrorMessage, Is.EqualTo("Character error"));
+        Assert.That(rule.GetErrorMessage, Is.EqualTo(ErrorMessages.IncludesCharacterError));
+    }
+    
+    [Test]
+    public void GetErrorMessage_returns_expected_message_when_IncludesNumberRule()
+    {
+        var rule = new IncludesNumberRule();
+        Assert.That(rule.GetErrorMessage, Is.EqualTo(ErrorMessages.IncludesNumberError));
     }
 }
