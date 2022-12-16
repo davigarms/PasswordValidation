@@ -2,15 +2,16 @@
 
 public class PasswordValidator
 {
-    private readonly IValidationRules _validationRule;
+    private readonly IValidation _validation;
 
-    public PasswordValidator(IValidationRules validationRule)
+    public PasswordValidator(IValidationFactory validationFactory)
     {
-        _validationRule = validationRule;
+        _validation = validationFactory.Create();
     }
 
-    public bool ValidatePassword(string password)
+    public bool IsValid(string password)
     {
-        return _validationRule.IsValid(password);
+        _validation.Validate(password);
+        return _validation.GetErrors().Count == 0;
     }
 }
