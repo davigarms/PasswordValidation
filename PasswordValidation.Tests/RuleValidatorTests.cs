@@ -3,7 +3,7 @@
 public class RuleValidatorTests
 {
     [Test]
-    public void RuleValidator_add_a_new_rule()
+    public void Add_a_new_rule()
     {
         var ruleValidator = new RuleValidator();
         ruleValidator.Add(new LengthRule(8));
@@ -11,7 +11,7 @@ public class RuleValidatorTests
     }
 
     [TestCaseSource(nameof(RuleValidatorWithLengthRuleCases))]
-    public void RuleValidator_with_LengthRule_returns_expected(int minLenght, string password, List<string> expectedErrorList)
+    public void Validate_returns_expected_error_when_LengthRule(int minLenght, string password, List<string> expectedErrorList)
     {
         var ruleValidator = new RuleValidatorBuilder()
             .WithLenghtRule(minLenght)
@@ -21,7 +21,7 @@ public class RuleValidatorTests
     }
 
     [TestCaseSource(nameof(RuleValidatorWithLengthRuleAndUpperCaseRuleCases))]
-    public void RuleValidator_with_LengthRule_and_UpperCaseRule_returns_expected(int minLenght, string password, List<string> expectedErrorList)
+    public void Validate_returns_expected_when_LengthRule_and_UpperCaseRule(int minLenght, string password, List<string> expectedErrorList)
     {
         var ruleValidator = new RuleValidatorBuilder()
             .WithLenghtRule(minLenght)
@@ -29,13 +29,6 @@ public class RuleValidatorTests
             .Build();
         ruleValidator.Validate(password);
         Assert.That(ruleValidator.GetErrors(), Is.EquivalentTo(expectedErrorList));
-    }
-
-
-    [Test]
-    public void Validation_factory_returns_the_correct_type()
-    {
-        Assert.That(new ValidationOneFactory().Create(), Is.InstanceOf<Validation>());
     }
 
     private static IEnumerable<object[]> RuleValidatorWithLengthRuleCases()

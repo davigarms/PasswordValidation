@@ -2,8 +2,8 @@ namespace PasswordValidation.Tests;
 
 public class PasswordValidatorTests
 {
-    [TestCaseSource(nameof(ValidatorReturnsExpectedCases))]
-    public void  PasswordValidator_returns_expected_result(List<string> expectedErrorList, bool expectedResult)
+    [TestCaseSource(nameof(IsValidReturnsExpectedCases))]
+    public void  IsValid_returns_expected_result(List<string> expectedErrorList, bool expectedResult)
     {
         var validatorFactory = A.Fake<IValidationFactory>();
         var ruleValidator = A.Fake<IValidation>();
@@ -19,7 +19,7 @@ public class PasswordValidatorTests
     [TestCase("PASSW0RDCONTAINSALOWERCASECHARACTEr_")]
     [TestCase("Passw0rdContainsANumber_")]
     [TestCase("Passw0rdContainsAnUnderscore_")]
-    public void PasswordValidator_with_validation_one_returns_true_when_password_is_valid(string password)
+    public void IsValid_returns_true_when_password_is_valid_on_validation_one(string password)
     {
         var validator = new PasswordValidator(new ValidationOneFactory());
         var isValid = validator.IsValid(password);
@@ -30,7 +30,7 @@ public class PasswordValidatorTests
     [TestCase("Passw0rdContainsAUpperCaseCharacter")]
     [TestCase("PASSW0RDCONTAINSALOWERCASECHARACTEr")]
     [TestCase("Passw0rdContainsANumber")]
-    public void PasswordValidator_with_validation_two_returns_true_when_password_is_valid(string password)
+    public void IsValid_returns_true_when_password_is_valid_on_validation_two(string password)
     {
         var validator = new PasswordValidator(new ValidationTwoFactory());
         var isValid = validator.IsValid(password);
@@ -41,14 +41,14 @@ public class PasswordValidatorTests
     [TestCase("PasswordContainsAUpperCaseCharacter_")]
     [TestCase("PASSWORDCONTAINSALOWERCASECHARACTEr_")]
     [TestCase("PasswordContainsAnUnderscore_")]
-    public void PasswordValidator_with_validation_three_returns_true_when_password_is_valid(string password)
+    public void IsValid_returns_true_when_password_is_valid_on_validation_three(string password)
     {
         var validator = new PasswordValidator(new ValidationThreeFactory());
         var isValid = validator.IsValid(password);
         Assert.That(isValid, Is.True);
     }
-
-    private static IEnumerable<object[]> ValidatorReturnsExpectedCases()
+    
+    private static IEnumerable<object[]> IsValidReturnsExpectedCases()
     {
         yield return new object[]
         {
